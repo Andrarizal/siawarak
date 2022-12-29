@@ -10,18 +10,19 @@
                     <div class="row">
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                             <div class="breadcome-heading">
-                                <a href="<?php echo base_url('C_rguru/presensi'); ?>">
-                                    <button type="submit" class="btn btn-primary waves-effect waves-light">
-                                        <i class="fa fa-arrow-left-square-o" aria-hidden="true"></i>Back
-                                    </button>
-                                </a>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <div class="breadcome-heading">
+                                <?php echo $this->session->userdata('uname'); ?>
+                            </div>
+                            </div>
+
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                             <ul class="breadcome-menu">
                                 <li><a href="#">Home</a> <span class="bread-slash">/</span>
                                 </li>
-                                <li><span class="bread-blod">Detail Presensi</span>
+                                <li><span class="bread-blod">Detail Jadwal</span>
                                 </li>
                             </ul>
                         </div>
@@ -33,6 +34,7 @@
 </div>
 </div>
 
+
 <!-- Static Table Start -->
 <div class="data-table-area mg-b-15">
     <div class="container-fluid">
@@ -41,12 +43,13 @@
                 <div class="sparkline13-list">
                     <div class="sparkline13-hd">
                         <div class="main-sparkline13-hd">
-                            <h1>Data Presensi</h1>
+                            <h1>Data Jadwal</h1>
                         </div>
                         <div class="add-product">
                             <!-- Trigger the modal with a button -->
                                 <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">Add</button>
-                        </div>
+                            <!-- <a href="<echo base_url('C_admin/addrapot'); ?>">Add Data</a> -->
+                    </div>
                         </div>
                         <div class="sparkline13-graph">
                             <div class="datatable-dashv1-list custom-datatable-overright">
@@ -62,13 +65,12 @@
                                <thead>
                                 <tr>
                                     <th data-field="state" data-checkbox="true"></th>
+                                    <th data-field="kelas" data-editable="true">Kelas</th>
                                     <th data-field="kode_mp" data-editable="true">Matapelajaran</th>
+                                    <th data-field="kode_semester" data-editable="true">Semester</th>
                                     <th data-field="kode_ta" data-editable="true">Tahun Ajaran</th>
-                                    <th data-field="pertemuan" data-editable="true">Pertemuan</th>
-                                    <th data-field="tanggal" data-editable="true">Tanggal</th>
-                                    <th data-field="alpha" data-editable="true">Alpha</th>
-                                    <th data-field="ijin" data-editable="true">Ijin</th>
-                                    <th data-field="sakit" data-editable="true">Sakit</th>
+                                    <th data-field="hari" data-editable="true">Hari</th>
+                                    <th data-field="waktu" data-editable="true">Waktu</th>
                                     <th data-field="aksi">Aksi</th>
                                 </tr>
                             </thead>
@@ -76,30 +78,24 @@
                                 <?php 
                                 $no=1;
 
-                                foreach ($presensi as $value) { ?>
+                                foreach ($jadwal as $value) { ?>
                                 <tr>
                                     <td></td>
-                                    <td><?php echo $value->nama ?></td>
-                                    <td>
-                                    <?php 
-                                        echo $this->db->query('SELECT nama FROM `tahun_ajaran` WHERE `kode` = "'. $value->kode .'"') -> result()[0]->nama; 
-                                    ?>    
-                                    </td>
-                                    <td><?php echo $value->pertemuan ?></td>
-                                    <td><?php echo $value->tanggal ?></td>
-                                    <td><?php echo $value->alpha ?></td>
-                                    <td><?php echo $value->ijin ?></td>
-                                    <td><?php echo $value->sakit ?></td>
+                                    <td><?php echo $value->kelas ?></td>
+                                    <td><?php echo $value->mapel ?></td>
+                                    <td><?php echo $value->semester ?></td>
+                                    <td><?php echo $value->ta ?></td>
+                                    <td><?php echo $value->hari ?></td>
+                                    <td><?php echo $value->waktu ?></td>
                                     <td class="datatable-ct">
-                                        <a href="<?php echo base_url('C_rguru/editpresensi/'.$value->kode) ?>"><button data-toggle="tooltip" title="Edit" class="pd-setting-ed"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></a>
-                                        <!-- <a href="<echo base_url('C_admin/deletepresensi/'.$value->kode) ?>"><button data-toggle="tooltip" title="Edit" class="pd-setting-ed"><i class="fa fa-trash-o" aria-hidden="true"></i></button></a> -->
+                                        <a href="<?php echo base_url('C_rguru/editjadwal/'.$value->kode_kelas.'/'.$value->kode_mp) ?>"><button data-toggle="tooltip" title="Edit" class="pd-setting-ed"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></a>
+                                        <!-- <a href="<echo base_url('C_admin/deleterapot/'.$value->kode_mp) ?>"><button data-toggle="tooltip" title="Edit" class="pd-setting-ed"><i class="fa fa-trash-o" aria-hidden="true"></i></button></a> -->
                                     </td>
                                 </tr>
                                 <?php
                                 $no++; 
                             } ?>
                         </tbody>
-                        
                     </table>
                 </div>
             </div>
@@ -108,9 +104,6 @@
 </div>
 </div>
 </div>
-
-
-
 <!-- Static Table End -->
 <div class="footer-copyright-area">
     <div class="container-fluid">
@@ -128,7 +121,8 @@
 <div id="myModal" class="modal fade" role="dialog">
   <div class="modal-dialog">
 
-<div class="modal-content">
+    <!-- Modal content-->
+    <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title">Data Jadwal</h4>
@@ -138,53 +132,48 @@
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                     <div class="review-content-section">
                                         <div id="dropzone1" class="pro-ad addcoursepro">
-                                                <?php echo form_open_multipart("C_rguru/savepresensi/ .$id"); ?>
+                                                <?php echo form_open_multipart("C_rguru/savejadwal/"); ?>
                                                 <?php echo validation_errors(); ?>
                                             <form action="#">
                                                 <div class="row">
                                                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                                         <div class="form-group">
-                                                            <input type="hidden" name="kode" value="<?= $id ?>" hidden>
+                                                            <input type="hidden" name="kode_kelas" value="<?= $id ?>" hidden>
                                                            <input disabled type="text" class="form-control" value="<?= $id ?>" />
                                                         </div>
                                                         <div class="form-group">
-                                                            <select class="form-control" name="kode_mp" id="">
+                                                            <select class="form-control" name="kode_mp" id="" required>
                                                                 <?php foreach($mapel as $m) { ?>
                                                                     <option value="<?= $m->kode ?>"><?= $m->nama ?></option>
                                                                 <?php } ?>
                                                             </select>
                                                         </div>
                                                         <div class="form-group">
-                                                            <select class="form-control" name="kode_semester" id="">
+                                                            <select class="form-control" name="kode_semester" id="" required>
                                                                 <?php foreach($semester as $s) { ?>
                                                                     <option value="<?= $s->kode ?>"><?= $s->nama ?></option>
                                                                 <?php } ?>
                                                             </select>
                                                         </div>
                                                         <div class="form-group">
-                                                            <select class="form-control" name="kode_ta" id="">
+                                                            <select class="form-control" name="kode_ta" id="" required>
                                                                 <?php foreach($tahunajaran as $ta) { ?>
                                                                     <option value="<?= $ta->kode ?>"><?= $ta->nama ?></option>
                                                                 <?php } ?>
                                                             </select>
                                                         </div>
                                                         <div class="form-group">
-                                                                    <input name="pertemuan" type="text" class="form-control" placeholder="Pertemuan" value="" />        
-                                                            </select>
+                                                           <select class="form-control" name="hari" required>
+                                                            <option value="Senin">Senin</option>
+                                                            <option value="Selasa">Selasa</option>
+                                                            <option value="Rabu">Rabu</option>
+                                                            <option value="Kamis">Kamis</option>
+                                                            <option value="Jumat">Jumat</option>
+                                                        </select>
                                                         </div>
                                                         <div class="form-group">
-                                                                    <input name="tanggal" type="date" class="form-control" placeholder="Tanggal" value="" />        
-                                                            </select>
-                                                        </div>
-                                                        
-                                                        <div class="form-group">
-                                                           <input name="ijin" type="text" class="form-control" placeholder="Izin" value="" />
-                                                        </div>
-                                                        <div class="form-group">
-                                                           <input name="sakit" type="text" class="form-control" placeholder="sakit" value="" />
-                                                        </div>
-                                                        <div class="form-group">
-                                                           <input name="alpha" type="text" class="form-control" placeholder="alpha" value="" />
+                                                           <input name="waktu awal" type="time"  /> - <input name="waktu akhir" type="time" />
+
                                                         </div>
                                                         <div class="form-group">
                                                             <button type="submit" class="btn btn-primary waves-effect waves-light">Submit</button>
@@ -203,7 +192,5 @@
 
   </div>
 </div>
-    
-
 
 <?php $this->load->view('main/footer'); ?>
