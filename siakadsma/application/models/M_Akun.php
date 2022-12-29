@@ -1,7 +1,7 @@
 <?php 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class M_akun extends CI_Model{
+class M_Akun extends CI_Model{
 
 	public function __construct()
 	{
